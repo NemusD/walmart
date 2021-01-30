@@ -1,0 +1,37 @@
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+  crossorigin="anonymous"
+/>
+<div>
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand">Lider</a>
+    <form class="d-flex">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+<script>
+    function search() {
+        let user = {
+            'id': document.getElementById("id").value,
+            'brand': document.getElementById("brand").value,
+            'description' : document.getElementById("description").value
+        }
+
+        axios.post('http://localhost:3000/home/consultas', user)
+        .then(function(res) {
+            if(res.status == 200) {
+                console.log(res.data);
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
+    }
+</script>
+</div>
