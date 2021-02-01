@@ -35,3 +35,76 @@
     }
 </script>
 </div>
+<script>
+  function verification() {
+
+    let user = {
+      'email': document.getElementById("email").value,
+      'password': document.getElementById("password").value
+    }
+
+     axios.post('http://localhost:3000/login', user)
+      .then(function(res) {
+        if( res.status==200 ) {
+          localStorage.setItem('token',res.data.result.token);
+          let url = `http://localhost:3000/evidencias?nombre=${res.data.result.nombre}`;
+          location.href = url;
+        }
+      })
+      .catch(function(error) {
+        alert(error.response.data.result.message);
+      })
+  }
+</script>
+
+<script>
+  function texto()
+{
+	let palabra = prompt("Escribe una palabra").toLowerCase();
+ 
+	palabra = palabra.replace(/ /g, "");
+ 
+	for (let i=0;i<palabra.length;i++){
+		if(palabra[i]!=palabra[palabra.length-i-1]){
+			return false;
+		}
+	}
+	return true;
+}
+ 
+if(texto())
+{
+	alert("Esto es palíndromo");
+}else{
+	alert("Esto no es palíndromo")
+}
+</script>
+
+<script>
+  async function getdata() {
+    let cuerpo = document.getElementById("cuerpo");
+    let html = ''; 
+    await axios.get('http://localhost:3000/')
+      .then(function(res) {
+        if(res.status==200) {
+        users = res.data.result;      
+        cuerpo.innerHTML = "";
+        let check = '';
+          
+        for (let c of users) {
+        check = '';
+        if(c.auth){
+        check = 'checked';
+        }       
+        cuerpo.innerHTML += `
+        <tr>
+        <td>${c.id}</td>
+        <td>${c.brand}</td>
+        <td>${c.description}</td>
+        </tr>`
+        }}
+      })
+      .catch(function(err) {
+        console.log(err);
+      })     
+  }

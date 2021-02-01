@@ -1,15 +1,14 @@
-const { Pool } = require('pg');
-const pool = new Pool ({
-    user:"postgres",
-    host: "localhost",
-    password: "postgres",
-    database: "walmart",
-    port: 5432,
-});
+db.createUser(
+  {
+    user: "nemus",
+    pwd: "nemus",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+);
 
 exports.obtenerUsuarios = async function (req, res){
     try{
-        const resultado = await pool.query( "SELECT id, brand, description FROM 01-products.json");
+        const resultado = await query( "SELECT id, brand, description FROM 01-products.json");
         response = { status: "200", message: "Productos encontrados", result: resultado.rows};
         res.status(200).send(response);
     } catch (error){
@@ -23,7 +22,7 @@ exports.obtenerUsuarios = async function (req, res){
 
 exports.login = async function (email, password){
     try{
-        const resultado = await pool.query( "SELECT  email, password FROM 01-products.json");
+        const resultado = await query( "SELECT  email, password FROM 01-products.json");
         let data = resultado.rows.find(user => user.email === email);
         if(data && data.password != password ){
             data = 0;
@@ -38,7 +37,7 @@ exports.login = async function (email, password){
 exports.crearUsuario = async function ( req, res ) {
     try{
         let data = res.req.body;
-        const resultado = await pool.query(`INSERT INTO usuarios (email, password) VALUES (${data.nombre}, ${data.email}, ${data.password}`);  
+        const resultado = await query(`INSERT INTO usuarios (email, password) VALUES (${data.id}, ${data.brand}, ${data.description}`);  
         const usuarioNuevo = resultado.rows[0];
 
         response = { status: "200", message: "Usuario registrado", result: usuarioNuevo};
@@ -54,38 +53,39 @@ exports.crearUsuario = async function ( req, res ) {
     }
 };
 
+exports.buscarPalindromo = async function (req, res) {
+	let palabra = req.prompt("Escribe una palabra").toLowerCase();
+ 
+	// eliminamos los espacios en blanco
+	palabra = palabra.replace(/ /g, "");
+ 
+	for (let i=0;i<palabra.length;i++){
+		if(palabra[i]!=palabra[palabra.length-i-1]){
+			return false;
+		}
+	}
+	return res.palabra;
+}
+if(texto())
+{
+	alert("Esto es palíndromo");
+}else{
+	alert("Esto no es palíndromo")
+}
 
-//funcion formulario para calcular precio producto.
-exports.calcula_precio = async function (req,res) {
-    //aqui cojo el elemento de la lista seleccionado.
-    try{
-        if(document.getElementById("opciones").selectedIndex){
-        seleccion = document.getElementById("opciones").value;
-        }
-        //else{alert("Debes seleccionar un producto"); return false;}  
-   
-     //aqui cojo el elemento radio seleccionado.
-        for(let i=0; i<document.formu.estado.length;i++){
-        if(document.formu.estado[i].checked){
-        seleccionado = document.formu.estado[i].value;
-        }
-        }
-   
-     //aqui cojo la cantidad introducida por el usuario.  
-   let unidades = document.getElementById("cantidad").value;
-    if(unidades > 0){
-      let unidades
-      }
-        //else{alert("Debes poner número días");return false;  } 
-   
-      //aqui cojo el valor del iva si ha sido seleccionado.
-   if(document.getElementById("iva").checked){
-    impuesto = document.getElementById("iva").value;}
-   
-     //y aqui realizo la ecuación.
-       if(document.getElementById("iva").checked){
-       var precio = (parseInt(seleccion) + parseInt(seleccionado)) * parseInt(unidades);
-       var precioConImpuestos = (1 + parseInt(impuesto)/100) * precio;
-       document.getElementById("precio").value = precioConImpuestos.toFixed(2);}
-       else{ var precio = (parseInt(seleccion) + parseInt(seleccionado)) * parseInt(unidades);
-       document.getElementById("precio").value = precio.toFixed(2); }}
+const obj = 01-products.json
+
+let data_brand = [];
+let data_id = [];
+let data_description = [];
+
+Object.keys(obj[0]).forEach( e => {
+    data_brand.push(obj[0][e].brand);
+    data_id.push(obj[0][e].id);
+    data_description.push(obj[0[e]].description);
+});
+
+console.log(data_description);
+console.log(data_id);
+console.log(data_brand);
+
